@@ -18,7 +18,7 @@ mongoose.connect(connectionString, {
 })
 .then(() => console.log('DB Connected!'))
 .catch(err => {
-  console.log(Error, err.message);
+  console.log('Error', err.message);
 });
 
 app.use(morganLogger('dev'));
