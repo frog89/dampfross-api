@@ -11,7 +11,7 @@ const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/users');
 
 const connectionString = 'mongodb+srv://dampfross:' + process.env.MONGO_ATLAS_PW + 
-  '@cluster0-s5ujy.mongodb.net/test?retryWrites=true&w=majority';
+  '@cluster0-s5ujy.mongodb.net/test2?retryWrites=true&w=majority';
 mongoose.connect(connectionString, { 
   useUnifiedTopology: true,
   useNewUrlParser: true
