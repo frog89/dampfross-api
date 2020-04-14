@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 
 const Game = require('../models/game');
+const Board = require('../models/board');
 const Utils = require('./utils');
 
 exports.getAllGameNames = (req, res, next) => {
@@ -19,9 +20,9 @@ exports.getAllGameNames = (req, res, next) => {
   .catch(err => Utils.handleError('getAllGameNames', res, err));
 }
 
-exports.getGame = (req, res, next) => {
-  const gameName = req.params.gameName;
-  Game.find({ name: gameName })
+exports.getById = (req, res, next) => {
+  const id = req.params.id;
+  Game.findById(id)
     .exec()
     .then(doc => {
       if (doc) {
@@ -32,14 +33,31 @@ exports.getGame = (req, res, next) => {
         });
       }
     })
-    .catch(err => Utils.handleError('getGame', res, err));
+    .catch(err => Utils.handleError('getById', res, err));
+}
+
+exports.getByName = (req, res, next) => {
+  const name = req.params.name;
+  Game.find({ name: name })
+    .exec()
+    .then(doc => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res.status(404).json({
+          message: 'Game not found!'
+        });
+      }
+    })
+    .catch(err => Utils.handleError('getByName', res, err));
 }
 
 const doCreateGame = (req, res, next) => {
-  let { name, password, players, dices, scoreTable, puppets, drawLines} = req.body;
+  let { name, password, players, dices, scoreTable, puppets, drawLines, board} = req.body;
+  console.log('doCreateGame', req.body);
   const game = new Game({
     _id: mongoose.Types.ObjectId(),
-    name, password, players, dices, scoreTable, puppets, drawLines
+    name, password, players, dices, scoreTable, puppets, drawLines, board
   });
   game.save()
     .then(result => {
@@ -50,6 +68,7 @@ const doCreateGame = (req, res, next) => {
 }
 
 exports.createGame = (req, res, next) => {
+  console.log('createGame', req.body);
   Game.find({ name: req.body.name })
     .then(game => {
       if (game.length === 0) {

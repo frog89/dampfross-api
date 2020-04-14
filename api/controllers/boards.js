@@ -1,3 +1,4 @@
+'use strict';
 const mongoose = require('mongoose');
 
 const Board = require('../models/board');
@@ -10,7 +11,10 @@ exports.getAllBoardNames = (req, res, next) => {
   .then(docs => {
     const response = {
       boards: docs.map(doc => {
-        return doc.name;
+        return {
+          _id: doc._id,
+          name: doc.name,
+        }
       })
     }
     res.status(200).json(response);
@@ -18,21 +22,38 @@ exports.getAllBoardNames = (req, res, next) => {
   .catch(err => Utils.handleError('getAllBoardNames', res, err));
 }
 
-exports.getBoard = (req, res, next) => {
-  const boardName = req.params.boardName;
-  Product.find({ name: boardName })
+exports.getById = (req, res, next) => {
+  const id = req.params.id;
+  Board.findById(id)
     .exec()
     .then(doc => {
       if (doc) {
         res.status(200).json(doc);
       } else {
         res.status(404).json({
-          message: 'Product not found!',
+          message: 'Board not found!',
           productId: id 
         });
       }
     })
-    .catch(err => Utils.handleError('getBoard', res, err));
+    .catch(err => Utils.handleError('getById', res, err));
+}
+
+exports.getByName = (req, res, next) => {
+  const name = req.params.name;
+  Board.find({ name: name })
+    .exec()
+    .then(doc => {
+      if (doc) {
+        res.status(200).json(doc);
+      } else {
+        res.status(404).json({
+          message: 'Board not found!',
+          productId: id 
+        });
+      }
+    })
+    .catch(err => Utils.handleError('getByName', res, err));
 }
 
 const doCreateBoard = (req, res, next) => {

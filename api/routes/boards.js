@@ -6,7 +6,9 @@ const BoardController = require('../controllers/boards');
 
 router.get('/', BoardController.getAllBoardNames);
 
-router.get('/:boardName', BoardController.getBoard);
+router.get('/:id', BoardController.getById);
+
+router.get('/getByName/:name', BoardController.getByName);
 
 router.post('/', BoardController.createBoard);
 
