@@ -5,19 +5,30 @@ const Game = require('../models/game');
 const Board = require('../models/board');
 const Utils = require('./utils');
 
-exports.getAllGameNames = (req, res, next) => {
-  Game.find()
+const findNamesOfGames = (req, res, next, findObject) => {
+  Game.find(findObject)
   .select('name')
   .exec()
   .then(docs => {
     const response = {
       games: docs.map(doc => {
-        return doc.name;
+        return {
+          _id: doc._id,
+          name: doc.name,
+        }
       })
     }
     res.status(200).json(response);
   })
   .catch(err => Utils.handleError('getAllGameNames', res, err));
+}
+
+exports.getNamesOfAllGames = (req, res, next) => {
+  findNamesOfGames(req, res, next, {});
+}
+
+exports.getNamesOfWaitingGames = (req, res, next) => {
+  findNamesOfGames(req, res, next, {status: 'W'});
 }
 
 exports.getById = (req, res, next) => {
@@ -53,11 +64,11 @@ exports.getByName = (req, res, next) => {
 }
 
 const doCreateGame = (req, res, next) => {
-  let { name, password, players, dices, scoreTable, puppets, drawLines, board} = req.body;
+  let { name, password, status, players, dices, scoreTable, puppets, drawLines, board} = req.body;
   console.log('doCreateGame', req.body);
   const game = new Game({
     _id: mongoose.Types.ObjectId(),
-    name, password, players, dices, scoreTable, puppets, drawLines, board
+    name, password, status, players, dices, scoreTable, puppets, drawLines, board
   });
   game.save()
     .then(result => {
@@ -75,7 +86,7 @@ exports.createGame = (req, res, next) => {
         doCreateGame(req, res, next);
       } else {
         res.status(404).json({
-          message: 'Game already exists'
+          message: 'Game does already exist!'
         })  
       }
     })
@@ -83,13 +94,22 @@ exports.createGame = (req, res, next) => {
 }
 
 exports.updateGame = (req, res, next) => {
-  const gameName = req.params.gameName;
-  Game.findOneAndUpdate({name: gameName}, req.body, {new: true, upsert: false}, function(err, doc) { 
+  const id = req.params.id;
+  Game.findOneAndUpdate({_id: id}, req.body, {new: true, upsert: false}, function(err, doc) { 
     if (err) {
-      return Utils.handleError(`updateGame ${gameName}`, res, err);
+      return Utils.handleError(`updateGame ${id}`, res, err);
     }
-    return res.status(201).json(`updateGame ${gameName}: ${doc}`);
+    return res.status(201).json(doc);
   });
+}
+
+exports.deleteAllGames = (req, res, next) => {
+  Game.deleteMany()
+    .exec()
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(err => Utils.handleError(`deleteAllGames`, res, err));
 }
 
 // exports.deleteOrder = (req, res, next) => {
@@ -107,17 +127,3 @@ exports.updateGame = (req, res, next) => {
 //   });
 // }
 
-// exports.deleteAllOrders = (req, res, next) => {
-//   Order.deleteMany()
-//     .exec()
-//     .then(result => {
-//       console.log(result);
-//       res.status(200).json(result);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.status(500).json({
-//         error: err
-//       });
-//     });
-// }
