@@ -65,7 +65,7 @@ exports.getByName = (req, res, next) => {
 
 const doCreateGame = (req, res, next) => {
   let { name, password, status, players, dices, scoreTable, puppets, drawLines, board} = req.body;
-  console.log('doCreateGame', req.body);
+  //console.log('doCreateGame', req.body);
   const game = new Game({
     _id: mongoose.Types.ObjectId(),
     name, password, status, players, dices, scoreTable, puppets, drawLines, board
@@ -79,7 +79,7 @@ const doCreateGame = (req, res, next) => {
 }
 
 exports.createGame = (req, res, next) => {
-  console.log('createGame', req.body);
+  //console.log('createGame', req.body);
   Game.find({ name: req.body.name })
     .then(game => {
       if (game.length === 0) {

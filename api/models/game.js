@@ -25,7 +25,7 @@ const gameSchema = mongoose.Schema({
     playerId: { type: String, required: true }
   }],
   drawLines: [{
-    points: [Number],  
+    points: [Number],
     playerId: { type: String, required: true }
   }],
   board: { 
