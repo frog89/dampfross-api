@@ -5,6 +5,7 @@ const boardSchema = mongoose.Schema({
   name: { type: String, required: true, unique: true },
   width: { type: Number, required: true },
   height: { type: Number, required: true },
+  mapPicture: String,
   combs: {
     data: [Number],
     offset: {type: Number, default: 0},
@@ -25,6 +26,11 @@ const boardSchema = mongoose.Schema({
   townTexts: {
     inside: [String],
     outside: [String],
+  },
+  combLines: {
+    data: [Number],	
+	  offset: {type: Number, default: 0},
+	  lineData: [[Number]]
   },
 });
 

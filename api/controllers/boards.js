@@ -57,10 +57,10 @@ exports.getByName = (req, res, next) => {
 }
 
 const doCreateBoard = (req, res, next) => {
-  let { name, width, height, combs, borders, rivers, textObjects, townTexts} = req.body;
+  let { name, width, height, combs, borders, rivers, textObjects, townTexts, lines} = req.body;
     const board = new Board({
       _id: mongoose.Types.ObjectId(),
-      name, width, height, combs, borders, rivers, textObjects, townTexts
+      name, width, height, combs, borders, rivers, textObjects, townTexts, lines
     });
     board.save()
       .then(result => {
