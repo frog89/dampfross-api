@@ -10,8 +10,10 @@ const boardRoutes = require('./api/routes/boards');
 const gameRoutes = require('./api/routes/games');
 // const userRoutes = require('./api/routes/users');
 
-const connectionString = 'mongodb+srv://dampfross:' + process.env.MONGO_ATLAS_PW + 
-  '@cluster0-s5ujy.mongodb.net/dampfross-api?retryWrites=true&w=majority';
+const connectionString = 'mongodb+srv://' + 
+  process.env.MONGO_ATLAS_USR + ':' + process.env.MONGO_ATLAS_PW + 
+  '@' + process.env.MONGO_ATLAS_DB + '?retryWrites=true&w=majority';
+  
 mongoose.connect(connectionString, { 
   useUnifiedTopology: true,
   useNewUrlParser: true,
