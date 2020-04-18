@@ -14,6 +14,11 @@ const connectionString = 'mongodb+srv://' +
   process.env.MONGO_ATLAS_USR + ':' + process.env.MONGO_ATLAS_PW + 
   '@' + process.env.MONGO_ATLAS_DB + '?retryWrites=true&w=majority';
   
+console.log('C-Str:', 'mongodb+srv://' +
+  process.env.MONGO_ATLAS_USR + ':pw' +
+  '@' + process.env.MONGO_ATLAS_DB + '?retryWrites=true&w=majority'
+);
+
 mongoose.connect(connectionString, { 
   useUnifiedTopology: true,
   useNewUrlParser: true,
