@@ -5,7 +5,7 @@ const boardSchema = mongoose.Schema({
   name: { type: String, required: true, unique: true },
   width: { type: Number, required: true },
   height: { type: Number, required: true },
-  mapPicture: String,
+  mapPicture: { type: String },
   combs: {
     data: [Number],
     offset: {type: Number, default: 0},
