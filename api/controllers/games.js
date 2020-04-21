@@ -103,6 +103,16 @@ exports.updateGame = (req, res, next) => {
   });
 }
 
+exports.deleteGame = (req, res, next) => {
+  const id = req.params.id;
+  Game.remove({ _id: id }).exec()
+    .then(result => {
+      // console.log('Deleted game ID ' + id);
+      res.status(200).json(result);
+    })
+    .catch(err => Utils.handleError(`deleteGame`, res, err));
+}
+
 exports.deleteAllGames = (req, res, next) => {
   Game.deleteMany()
     .exec()
@@ -111,19 +121,4 @@ exports.deleteAllGames = (req, res, next) => {
     })
     .catch(err => Utils.handleError(`deleteAllGames`, res, err));
 }
-
-// exports.deleteOrder = (req, res, next) => {
-//   const id = req.params.orderId;
-//   Order.remove({ _id: id }).exec()
-//     .then(result => {
-//       console.log('Deleted order ID ' + id);
-//       res.status(200).json(result);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       res.status(500).json({
-//         error: err
-//     });
-//   });
-// }
 

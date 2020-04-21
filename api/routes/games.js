@@ -14,9 +14,8 @@ router.post('/', GameController.createGame);
 
 router.patch('/:id', GameController.updateGame);
 
+router.delete('/:id', GameController.deleteGame);
+
 router.delete('/', GameController.deleteAllGames);
-
-// router.delete('/:orderId', checkAuth, OrdersController.deleteOrder);
-
 
 module.exports = router;
