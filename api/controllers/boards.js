@@ -6,7 +6,7 @@ const Utils = require('./utils');
 
 exports.getAllBoardNames = (req, res, next) => {
   Board.find()
-  .select('name')
+  .select('name mapPicture')
   .exec()
   .then(docs => {
     const response = {
@@ -14,6 +14,7 @@ exports.getAllBoardNames = (req, res, next) => {
         return {
           _id: doc._id,
           name: doc.name,
+          mapPicture: doc.mapPicture,
         }
       })
     }
